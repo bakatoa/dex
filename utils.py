@@ -480,26 +480,27 @@ async def get_shortlink(chat_id, link):
         url = f'https://{URL}/api'
         params = {
             "api": API,
+            "format": "json",
             "url": link,
         }
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json()
+                    data = await response.json(content_type="text/html")
                     if data["status"] == "success":
                         return data["shortenedUrl"]
                     else:
                         logger.error(f"Error: {data['message']}")
                         if URL == 'shrinkfly.com':
-                            return f'https://{URL}/api?api={API}&url={link}'
+                            return f'https://{URL}/api?api={API}&format=json&url={link}'
                         else:
-                            return f'https://{URL}/api?api={API}&link={link}'
+                            return f'https://{URL}/api?api={API}&format=json&link={link}'
         except Exception as e:
             logger.error(e)
             if URL == 'shrinkfly.com':
-                return f'https://{URL}/api?api={API}&url={link}'
+                return f'https://{URL}/api?api={API}&format=json&url={link}'
             else:
-                return f'https://{URL}/api?api={API}&link={link}'
+                return f'https://{URL}/api?api={API}&format=json&link={link}'
 
 async def get_verify_shorted_link(num, link):
     if int(num) == 1:
@@ -535,26 +536,27 @@ async def get_verify_shorted_link(num, link):
     else:
         url = f'https://{URL}/api'
         params = {'api': API,
+                  "format": "json",
                   'url': link,
                   }
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json()
+                    data = await response.json(content_type="text/html")
                     if data["status"] == "success":
                         return data["shortenedUrl"]
                     else:
                         logger.error(f"Error: {data['message']}")
                         if URL == 'shrinkfly.com':
-                            return f'https://{URL}/api?api={API}&url={link}'
+                            return f'https://{URL}/api?api={API}&format=json&url={link}'
                         else:
-                            return f'https://{URL}/api?api={API}&link={link}'
+                            return f'https://{URL}/api?api={API}&format=json&link={link}'
         except Exception as e:
             logger.error(e)
             if URL == 'shrinkfly.com':
-                return f'https://{URL}/api?api={API}&url={link}'
+                return f'https://{URL}/api?api={API}&format=json&url={link}'
             else:
-                return f'https://{URL}/api?api={API}&link={link}'
+                return f'https://{URL}/api?api={API}&format=json&link={link}'
 
 async def check_token(bot, userid, token):
     user = await bot.get_users(userid)
